@@ -1,0 +1,217 @@
+@{
+    ViewData["Title"] = "Executive Dashboard";
+}
+
+<div class="container-fluid px-0">
+    <!-- Dashboard Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-12 col-md-6">
+            <h3 class="mb-1 fw-bold text-dark">Retail Optimization Dashboard</h3>
+            <p class="text-muted mb-0 small">Real-time store metrics, inventory valuations, and sales trends.</p>
+        </div>
+        <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
+            <span class="badge bg-light text-dark border p-2">
+                <i class="bi bi-calendar3 text-primary me-2"></i> @DateTime.Now.ToString("dd MMMM yyyy")
+            </span>
+        </div>
+    </div>
+
+    <!-- KPI Summary Row -->
+    <div class="row g-3 mb-4">
+        <!-- KPI 1 -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: white;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase small fw-bold" style="opacity: 0.85; letter-spacing: 0.5px;">Total Inventory Value</span>
+                        <div class="bg-white bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-box-seam fs-5 text-white"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1">₹@ViewBag.TotalValue.ToString("N2")</h3>
+                    <p class="mb-0 small text-white-50"><i class="bi bi-arrow-up-right me-1"></i> Live DB Valuation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-muted small fw-bold" style="letter-spacing: 0.5px;">Total Orders</span>
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-cart3 fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-1">@ViewBag.TotalOrders</h3>
+                    <p class="mb-0 small text-muted"><i class="bi bi-clock-history me-1"></i> Lifetime count</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-muted small fw-bold" style="letter-spacing: 0.5px;">Low Stock Items</span>
+                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-exclamation-triangle fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-danger mb-1">@ViewBag.LowStockItems</h3>
+                    <p class="mb-0 small text-muted"><i class="bi bi-shield-fill-exclamation me-1"></i> Threshold: &lt; 10 units</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-muted small fw-bold" style="letter-spacing: 0.5px;">Avg Order Value</span>
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-currency-rupee fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-1">₹@ViewBag.AverageOrderValue.ToString("N2")</h3>
+                    <p class="mb-0 small text-muted"><i class="bi bi-graph-up-arrow text-success me-1"></i> Transaction average</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4">
+        <!-- Sales Trend Line Chart -->
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold text-dark"><i class="bi bi-activity text-primary me-2"></i> Monthly Sales Performance</h6>
+                        <span class="badge bg-indigo text-dark">Live SQL Data</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="w-100" style="height: 320px; position: relative;">
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Stock Distribution Chart -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="mb-0 fw-bold text-dark"><i class="bi bi-pie-chart text-primary me-2"></i> Stock Distribution</h6>
+                </div>
+                <div class="card-body p-4 d-flex flex-column justify-content-center">
+                    <div class="w-100" style="height: 250px; position: relative;">
+                        <canvas id="stockDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Initialize Sales Trend Line Chart
+            var salesCtx = document.getElementById('salesTrendChart');
+            if (salesCtx) {
+                var ctx = salesCtx.getContext('2d');
+                
+                // Create a beautiful indigo gradient for line fill
+                var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, 'rgba(79, 70, 229, 0.4)');
+                gradient.addColorStop(1, 'rgba(79, 70, 229, 0.01)');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: @Html.Raw(Json.Serialize(ViewBag.SalesMonths ?? new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" })),
+                        datasets: [{
+                            label: 'Monthly Revenue (₹)',
+                            data: @Html.Raw(Json.Serialize(ViewBag.SalesValues ?? new[] { 12000, 19000, 15000, 22000, 18000, 25000 })),
+                            borderColor: '#4f46e5',
+                            backgroundColor: gradient,
+                            borderWidth: 3.5,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#4f46e5',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#64748b', font: { family: 'Inter' } }
+                            },
+                            y: {
+                                border: { dash: [5, 5] },
+                                grid: { color: '#f1f5f9' },
+                                ticks: {
+                                    color: '#64748b',
+                                    font: { family: 'Inter' },
+                                    callback: function(value) {
+                                        return '₹' + value.toLocaleString('en-IN');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 2. Initialize Stock Distribution Doughnut Chart
+            var stockCtx = document.getElementById('stockDistributionChart');
+            if (stockCtx) {
+                new Chart(stockCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: @Html.Raw(Json.Serialize(ViewBag.StockCategories ?? new[] { "Electronics", "Apparel", "Home & Garden" })),
+                        datasets: [{
+                            data: @Html.Raw(Json.Serialize(ViewBag.StockValues ?? new[] { 45, 25, 30 })),
+                            backgroundColor: ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#64748b'],
+                            borderWidth: 3,
+                            borderColor: '#ffffff',
+                            hoverOffset: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '72%',
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 15,
+                                    font: { family: 'Inter', size: 12 },
+                                    color: '#334155'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

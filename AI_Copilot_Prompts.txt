@@ -1,0 +1,14 @@
+# Retail Optimization Platform - AI & Copilot Usage Log
+# This document tracks how Generative AI was used to accelerate development, enforce code quality, and generate tests.
+
+1. Database Architecture & Seeding
+Prompt Used: "Generate an Entity Framework Core OnModelCreating method that enforces a unique index on the Sku column, adds check constraints to prevent negative stock quantities, and inserts 4 initial seed data records for an Inventory entity."
+
+2. Security & Middleware
+Prompt Used: "Write a GlobalExceptionMiddleware class for ASP.NET Core 8 that catches a custom InventoryNotFoundException and returns a 404, while catching all other fatal exceptions and returning a generic 500 error to hide stack traces."
+
+3. API Standardization
+Prompt Used: "Refactor this ASP.NET Core REST API controller to ensure every HTTP response returns a standardized JSON object containing 'Error' and 'Message' properties when ModelState is invalid or an item is not found."
+
+4. Automated Testing (TDD)
+Prompt Used: "Create an xUnit test class using the Moq framework. Write an Arrange-Act-Assert test that verifies an InventoryApiController returns a NotFoundObjectResult when the mocked IInventoryRepository returns a null item."

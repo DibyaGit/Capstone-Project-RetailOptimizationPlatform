@@ -1,0 +1,6 @@
+@RetailOptimizationPlatform.Api_HostAddress = http://localhost:5112
+
+GET {{RetailOptimizationPlatform.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

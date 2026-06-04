@@ -1,0 +1,75 @@
+@model IEnumerable<RetailOptimizationPlatform.Core.Entities.RevenueReportDto>
+
+@{
+    ViewData["Title"] = "Stored Procedure Revenue Report";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1 fw-bold text-dark">Stored Procedure Revenue Report</h3>
+            <p class="text-muted mb-0 small">This report runs the database-level Stored Procedure <code>sp_GenerateRevenueReport</code> via raw ADO.NET.</p>
+        </div>
+        <div class="btn-group" role="group">
+            <a asp-action="PerformanceDashboard" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+            <button class="btn btn-primary btn-sm" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert explaining Database architecture -->
+    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
+        <i class="bi bi-cpu fs-4 me-3 text-info"></i>
+        <div>
+            <strong>SQL Optimization & Database Performance:</strong> This page invokes a stored procedure with custom pre-compiled query plans, joining the <code>Orders</code> and <code>Inventories</code> tables. This bypasses the EF Core LINQ translation layer completely, showing direct integration of raw ADO.NET commands.
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3 border-0">
+            <h6 class="mb-0 fw-bold text-dark"><i class="bi bi-table text-primary me-2"></i> Revenue by Inventory Item</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>SKU Code</th>
+                            <th class="text-center">Total Units Sold</th>
+                            <th class="text-end">Total Revenue Generated (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model == null || !Model.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No data returned from stored procedure. Ensure migrations are applied.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var row in Model)
+                            {
+                                <tr>
+                                    <td><strong>@row.ItemName</strong></td>
+                                    <td><code class="text-primary bg-light px-2 py-1 rounded">@row.Sku</code></td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary">@row.TotalUnitsSold</span>
+                                    </td>
+                                    <td class="text-end fw-bold text-success">
+                                        ₹@row.TotalRevenueGenerated.ToString("N2")
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

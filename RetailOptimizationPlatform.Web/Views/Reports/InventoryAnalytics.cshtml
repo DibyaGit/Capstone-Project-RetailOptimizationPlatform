@@ -1,0 +1,227 @@
+@{
+	ViewData["Title"] = "Inventory Analytics Report";
+}
+
+<div class="container-fluid py-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="mb-0">Inventory Analytics Report</h2>
+		<button class="btn btn-outline-secondary" onclick="window.print()">
+			<i class="bi bi-printer"></i> Print Report
+		</button>
+	</div>
+
+	<!-- Key Metrics Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Inventory Value</div>
+					<div class="h4 fw-bold mt-2">₹@ViewBag.TotalValue.ToString("0.00")</div>
+					<div class="small text-muted">Current valuation</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Items</div>
+					<div class="h4 fw-bold mt-2">@ViewBag.TotalItems</div>
+					<div class="small text-muted">Product SKUs</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Stock</div>
+					<div class="h4 fw-bold mt-2">@ViewBag.TotalStock</div>
+					<div class="small text-muted">Units in stock</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Low Stock Items</div>
+					<div class="h4 fw-bold mt-2" style="color: #ef4444;">@ViewBag.LowStockCount</div>
+					<div class="small text-danger">Reorder recommended</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Charts Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-lg-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Stock Distribution by Category</h5>
+				</div>
+				<div class="card-body" style="height: 300px;">
+					<canvas id="distributionChart"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Stock Level Summary</h5>
+				</div>
+				<div class="card-body">
+					<div class="mb-3">
+						<div class="d-flex justify-content-between mb-2">
+							<span>In Stock</span>
+							<strong>@(ViewBag.TotalItems - ViewBag.OutOfStock)</strong>
+						</div>
+						<div class="progress">
+							<div class="progress-bar bg-success" style="width: @((ViewBag.TotalItems - ViewBag.OutOfStock) * 100 / ViewBag.TotalItems)%"></div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<div class="d-flex justify-content-between mb-2">
+							<span>Low Stock (&lt;10 units)</span>
+							<strong>@ViewBag.LowStockCount</strong>
+						</div>
+						<div class="progress">
+							<div class="progress-bar bg-warning" style="width: @(ViewBag.LowStockCount * 100 / ViewBag.TotalItems)%"></div>
+						</div>
+					</div>
+
+					<div>
+						<div class="d-flex justify-content-between mb-2">
+							<span>Out of Stock</span>
+							<strong>@ViewBag.OutOfStock</strong>
+						</div>
+						<div class="progress">
+							<div class="progress-bar bg-danger" style="width: @(ViewBag.OutOfStock * 100 / ViewBag.TotalItems)%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Inventory Turnover -->
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-light border-bottom">
+			<h5 class="mb-0">Inventory Performance Metrics</h5>
+		</div>
+		<div class="card-body">
+			<div class="row text-center">
+				<div class="col-md-4">
+					<h6 class="text-muted">Turnover Ratio (30 days)</h6>
+					<h3 class="fw-bold">@ViewBag.TurnoverRatio.ToString("0.00")x</h3>
+					<small class="text-muted">Times inventory sold per period</small>
+				</div>
+				<div class="col-md-4">
+					<h6 class="text-muted">Average Item Value</h6>
+					<h3 class="fw-bold">₹@ViewBag.AverageValue.ToString("0.00")</h3>
+					<small class="text-muted">Per SKU</small>
+				</div>
+				<div class="col-md-4">
+					<h6 class="text-muted">Inventory Health</h6>
+					<h3 class="fw-bold" style="color: #10b981;">Good</h3>
+					<small class="text-success">Optimal stock levels</small>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Detailed Inventory Table -->
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-light border-bottom">
+			<h5 class="mb-0">Inventory Details</h5>
+		</div>
+		<div class="card-body p-0">
+			<div class="table-responsive">
+				<table class="table table-hover mb-0">
+					<thead class="table-light">
+						<tr>
+							<th>Item Name</th>
+							<th>SKU</th>
+							<th class="text-center">Stock</th>
+							<th class="text-end">Unit Price</th>
+							<th class="text-end">Total Value</th>
+							<th class="text-center">Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in ViewBag.Inventory ?? new List<object>())
+						{
+							<tr>
+								<td>@item.ItemName</td>
+								<td><code>@item.Sku</code></td>
+								<td class="text-center">
+									@if (item.StockQuantity == 0)
+									{
+										<span class="badge bg-danger">@item.StockQuantity</span>
+									}
+									else if (item.StockQuantity < 10)
+									{
+										<span class="badge bg-warning text-dark">@item.StockQuantity</span>
+									}
+									else
+									{
+										<span class="badge bg-success">@item.StockQuantity</span>
+									}
+								</td>
+								<td class="text-end">₹@item.Price.ToString("0.00")</td>
+								<td class="text-end fw-bold">₹@((item.Price * item.StockQuantity).ToString("0.00"))</td>
+								<td class="text-center">
+									@if (item.StockQuantity == 0)
+									{
+										<span class="badge bg-danger">Out of Stock</span>
+									}
+									else if (item.StockQuantity < 10)
+									{
+										<span class="badge bg-warning text-dark">Low Stock</span>
+									}
+									else
+									{
+										<span class="badge bg-success">In Stock</span>
+									}
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+	<script>
+		// Stock Distribution Chart
+		var distCtx = document.getElementById('distributionChart');
+		if (distCtx) {
+			var distData = @Html.Raw(Json.Serialize(ViewBag.StockDistribution ?? new List<dynamic>()));
+
+			new Chart(distCtx, {
+				type: 'doughnut',
+				data: {
+					labels: distData.map(d => d.category),
+					datasets: [{
+						data: distData.map(d => d.itemCount),
+						backgroundColor: ['#4f46e5', '#f59e0b', '#10b981', '#ef4444'],
+						borderWidth: 2,
+						borderColor: '#fff'
+					}]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins: {
+						legend: { position: 'bottom' }
+					}
+				}
+			});
+		}
+	</script>
+}

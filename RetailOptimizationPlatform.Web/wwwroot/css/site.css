@@ -1,0 +1,238 @@
+/* =========================================
+   DC-Analytics Premium SaaS Design System
+   ========================================= */
+:root {
+    --saas-primary: #4f46e5;       /* Indigo 600 */
+    --saas-primary-hover: #4338ca; /* Indigo 700 */
+    --saas-primary-light: #e0e7ff; /* Indigo 100 */
+    --saas-sidebar: #0f172a;       /* Slate 900 */
+    --saas-sidebar-hover: #1e293b; /* Slate 800 */
+    --saas-bg: #f8fafc;            /* Slate 50 */
+    --saas-text: #334155;          /* Slate 700 */
+    --saas-text-muted: #64748b;    /* Slate 500 */
+    --saas-border: #e2e8f0;        /* Slate 200 */
+    --saas-card-bg: #ffffff;
+    --saas-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --saas-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+body {
+    background-color: var(--saas-bg);
+    color: var(--saas-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Main Layout Wrapper */
+.saas-main-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Sidebar Styling */
+.saas-sidebar {
+    background-color: var(--saas-sidebar);
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+}
+
+.saas-brand {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    padding: 1.5rem 1.5rem;
+    display: block;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s ease;
+}
+
+.saas-brand:hover {
+    color: var(--saas-primary-light);
+}
+
+.saas-nav-link {
+    color: #94a3b8;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    margin: 0.3rem 1rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.saas-nav-link:hover, 
+.saas-nav-link.active {
+    background-color: var(--saas-sidebar-hover);
+    color: #ffffff;
+}
+
+.saas-nav-link i {
+    margin-right: 12px;
+    font-size: 1.15rem;
+}
+
+/* Main Content Layout */
+.saas-content {
+    flex: 1;
+    margin-left: 260px; /* Space for the fixed sidebar */
+    padding: 2rem;
+    min-width: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium Topbar */
+.saas-topbar {
+    background: #ffffff;
+    box-shadow: var(--saas-shadow);
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--saas-border);
+}
+
+/* Cards & Panels */
+.card {
+    background-color: var(--saas-card-bg);
+    border: 1px solid var(--saas-border);
+    box-shadow: var(--saas-shadow);
+    border-radius: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.shadow-sm {
+    box-shadow: var(--saas-shadow) !important;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--saas-shadow-lg) !important;
+}
+
+.card-header {
+    background-color: #f8fafc;
+    border-bottom: 1px solid var(--saas-border);
+    font-weight: 600;
+}
+
+/* Tables Customization */
+.table {
+    vertical-align: middle;
+}
+
+.table-responsive {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    border-bottom: 2px solid var(--saas-border);
+}
+
+.table tbody td {
+    padding: 1rem;
+    color: var(--saas-text);
+}
+
+/* Buttons Styling */
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--saas-primary);
+    border-color: var(--saas-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--saas-primary-hover);
+    border-color: var(--saas-primary-hover);
+}
+
+.btn-success {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+    border-color: #059669;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid var(--saas-border);
+    padding: 0.6rem 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--saas-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 550;
+    border-radius: 0.375rem;
+}
+
+/* Chart Canvas Wrapper */
+canvas {
+    max-width: 100%;
+}
+
+/* Responsive Media Queries (Mobile First) */
+@media (max-width: 992px) {
+    /* Hide sidebar by default on mobile/tablet */
+    .saas-sidebar {
+        left: -260px;
+    }
+    
+    .saas-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    
+    /* When sidebar is opened via state */
+    .saas-main-wrapper.sidebar-open .saas-sidebar {
+        left: 0;
+    }
+
+    .saas-main-wrapper.sidebar-open .saas-content {
+        transform: translateX(10px);
+        pointer-events: none; /* Disable interaction with content while menu is open */
+    }
+    
+    .saas-topbar {
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+}

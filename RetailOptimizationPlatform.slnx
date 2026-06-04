@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Conceptual_Docs/">
+    <File Path="AI_Copilot_Prompts.txt" />
+    <File Path="Architecture_Diagram.md" />
+    <File Path="azure-pipelines.yml" />
+    <File Path="Database_Schema.md" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile.txt" />
+    <File Path="GitHub_Actions_CI_CD.yml" />
+    <File Path="Swagger_API_Documentation.json" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="RetailOptimizationPlatform.Api/RetailOptimizationPlatform.Api.csproj" />
+  <Project Path="RetailOptimizationPlatform.Core/RetailOptimizationPlatform.Core.csproj" />
+  <Project Path="RetailOptimizationPlatform.Data/RetailOptimizationPlatform.Data.csproj" />
+  <Project Path="RetailOptimizationPlatform.Tests/RetailOptimizationPlatform.Tests.csproj" Id="53ac3835-2157-4ceb-b2d1-e7480870fcf7" />
+  <Project Path="RetailOptimizationPlatform.Web/RetailOptimizationPlatform.Web.csproj" />
+</Solution>

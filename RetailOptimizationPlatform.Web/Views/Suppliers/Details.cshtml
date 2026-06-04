@@ -1,0 +1,154 @@
+@model RetailOptimizationPlatform.Core.Entities.Supplier
+
+@{
+	ViewData["Title"] = "Supplier Details";
+}
+
+<div class="container-fluid py-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="mb-0">@Model.Name</h2>
+		<div class="btn-group" role="group">
+			<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+				<i class="bi bi-pencil-square"></i> Edit
+			</a>
+			<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+				<i class="bi bi-trash3"></i> Delete
+			</a>
+			<a asp-action="Index" class="btn btn-outline-secondary">
+				<i class="bi bi-arrow-left"></i> Back
+			</a>
+		</div>
+	</div>
+
+	<div class="row g-3">
+		<div class="col-lg-8">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Contact Information</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<strong>Contact Person</strong>
+							<p>@Model.ContactPerson</p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Email</strong>
+							<p><a href="mailto:@Model.Email">@Model.Email</a></p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Phone Number</strong>
+							<p><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Payment Terms</strong>
+							<p>@Model.PaymentTerms</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card shadow-sm border-0 mt-3">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Location Information</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<strong>City</strong>
+							<p>@Model.City</p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>State/Province</strong>
+							<p>@(Model.State ?? "N/A")</p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Country</strong>
+							<p>@Model.Country</p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Postal Code</strong>
+							<p>@(Model.PostalCode ?? "N/A")</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card shadow-sm border-0 mt-3">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Business Terms</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<strong>Lead Time</strong>
+							<p>@Model.LeadTimeDays days</p>
+						</div>
+						<div class="col-md-6 mb-3">
+							<strong>Credit Limit</strong>
+							<p>₹@Model.CreditLimit.ToString("0.00")</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			@if (!string.IsNullOrEmpty(Model.Notes))
+			{
+				<div class="card shadow-sm border-0 mt-3">
+					<div class="card-header bg-light border-bottom">
+						<h5 class="mb-0">Notes</h5>
+					</div>
+					<div class="card-body">
+						<p>@Model.Notes</p>
+					</div>
+				</div>
+			}
+		</div>
+
+		<div class="col-lg-4">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Supplier Status</h5>
+				</div>
+				<div class="card-body">
+					<div class="mb-3">
+						<small class="text-muted">Status</small>
+						<p class="mb-0">
+							@if (Model.IsActive)
+							{
+								<span class="badge bg-success">Active</span>
+							}
+							else
+							{
+								<span class="badge bg-danger">Inactive</span>
+							}
+						</p>
+					</div>
+
+					<div class="mb-3">
+						<small class="text-muted">Rating</small>
+						<p class="mb-0">
+							<div class="d-flex align-items-center gap-1">
+								<i class="bi bi-star-fill" style="color: #fbbf24;"></i>
+								<strong>@Model.Rating.ToString("0.0")</strong>
+								<span class="text-muted">/5.0</span>
+							</div>
+						</p>
+					</div>
+
+					<hr />
+
+					<div class="mb-3">
+						<small class="text-muted">Created</small>
+						<p class="mb-0">@Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+					</div>
+
+					<div>
+						<small class="text-muted">Last Updated</small>
+						<p class="mb-0">@Model.LastUpdated.ToString("MMM dd, yyyy HH:mm")</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

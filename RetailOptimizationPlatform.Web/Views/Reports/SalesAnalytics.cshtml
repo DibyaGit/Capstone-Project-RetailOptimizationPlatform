@@ -1,0 +1,162 @@
+@{
+	ViewData["Title"] = "Sales Analytics Report";
+}
+
+<div class="container-fluid py-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="mb-0">Sales Analytics Report</h2>
+		<button class="btn btn-outline-secondary" onclick="window.print()">
+			<i class="bi bi-printer"></i> Print Report
+		</button>
+	</div>
+
+	<!-- Key Metrics Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Sales</div>
+					<div class="h4 fw-bold mt-2">₹@ViewBag.TotalSales.ToString("0.00")</div>
+					<div class="small text-success"><i class="bi bi-arrow-up"></i> 12 months</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Orders</div>
+					<div class="h4 fw-bold mt-2">@ViewBag.TotalOrders</div>
+					<div class="small text-muted">Orders processed</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Avg Order Value</div>
+					<div class="h4 fw-bold mt-2">₹@ViewBag.AverageOrderValue.ToString("0.00")</div>
+					<div class="small text-muted">Per transaction</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Status</div>
+					<div class="h4 fw-bold mt-2" style="color: #10b981;">Active</div>
+					<div class="small text-success">All systems operational</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Charts Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-lg-8">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Sales Trend (12 Months)</h5>
+				</div>
+				<div class="card-body" style="height: 300px;">
+					<canvas id="salesTrendChart"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-4">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Order Status</h5>
+				</div>
+				<div class="card-body">
+					@foreach (var status in ViewBag.OrderStatus ?? new List<dynamic>())
+					{
+						<div class="d-flex justify-content-between align-items-center mb-2">
+							<span>@status.Status</span>
+							<span class="badge bg-primary">@status.Count</span>
+						</div>
+						<div class="progress mb-3" style="height: 6px;">
+							<div class="progress-bar" style="width: @(status.Count * 10)%"></div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Top Selling Items -->
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-light border-bottom">
+			<h5 class="mb-0">Top 10 Best-Selling Items</h5>
+		</div>
+		<div class="card-body p-0">
+			<div class="table-responsive">
+				<table class="table table-hover mb-0">
+					<thead class="table-light">
+						<tr>
+							<th>Item Name</th>
+							<th class="text-center">Order Count</th>
+							<th class="text-end">Total Sales (₹)</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in ViewBag.TopItems ?? new List<dynamic>())
+						{
+							<tr>
+								<td>@item.ItemName</td>
+								<td class="text-center"><span class="badge bg-info">@item.OrderCount</span></td>
+								<td class="text-end">₹@item.TotalSales.ToString("0.00")</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+	<script>
+		// Sales Trend Chart
+		var salesCtx = document.getElementById('salesTrendChart');
+		if (salesCtx) {
+			var salesData = @Html.Raw(Json.Serialize(ViewBag.SalesTrend ?? new List<dynamic>()));
+
+			new Chart(salesCtx, {
+				type: 'bar',
+				data: {
+					labels: salesData.map(s => s.month),
+					datasets: [{
+						label: 'Monthly Sales (₹)',
+						data: salesData.map(s => parseFloat(s.monthlySales).toFixed(2)),
+						backgroundColor: 'rgba(79, 70, 229, 0.8)',
+						borderColor: '#4f46e5',
+						borderWidth: 2,
+						borderRadius: 4
+					}]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins: {
+						legend: { display: true }
+					},
+					scales: {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								callback: function(value) {
+									return '₹' + value.toLocaleString('en-IN');
+								}
+							}
+						}
+					}
+				}
+			});
+		}
+	</script>
+}

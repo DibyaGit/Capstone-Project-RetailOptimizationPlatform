@@ -1,0 +1,214 @@
+@{
+	ViewData["Title"] = "Order Analytics Report";
+}
+
+<div class="container-fluid py-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="mb-0">Order Analytics Report</h2>
+		<button class="btn btn-outline-secondary" onclick="window.print()">
+			<i class="bi bi-printer"></i> Print Report
+		</button>
+	</div>
+
+	<!-- Key Metrics Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Orders</div>
+					<div class="h4 fw-bold mt-2">@ViewBag.OrderCount</div>
+					<div class="small text-muted">Orders processed</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Total Order Value</div>
+					<div class="h4 fw-bold mt-2">₹@ViewBag.TotalOrderValue.ToString("0.00")</div>
+					<div class="small text-muted">Revenue generated</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Avg Order Value</div>
+					<div class="h4 fw-bold mt-2">₹@ViewBag.AverageOrderValue.ToString("0.00")</div>
+					<div class="small text-muted">Per transaction</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<div class="small text-uppercase text-muted">Unique Customers</div>
+					<div class="h4 fw-bold mt-2">@(ViewBag.TopCustomers?.Count ?? 0)</div>
+					<div class="small text-muted">Top customers shown</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Charts Row -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-lg-8">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Orders by Month (12 Months)</h5>
+				</div>
+				<div class="card-body" style="height: 300px;">
+					<canvas id="ordersChart"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-4">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Order Value Distribution</h5>
+				</div>
+				<div class="card-body">
+					<div class="mb-3">
+						<div class="d-flex justify-content-between mb-2">
+							<span>High Value (&gt;₹5000)</span>
+							<span class="badge bg-success">Premium</span>
+						</div>
+						<div class="progress mb-3">
+							<div class="progress-bar bg-success" style="width: 35%"></div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<div class="d-flex justify-content-between mb-2">
+							<span>Medium (₹1000-₹5000)</span>
+							<span class="badge bg-info">Standard</span>
+						</div>
+						<div class="progress mb-3">
+							<div class="progress-bar bg-info" style="width: 45%"></div>
+						</div>
+					</div>
+
+					<div>
+						<div class="d-flex justify-content-between mb-2">
+							<span>Low (&lt;₹1000)</span>
+							<span class="badge bg-warning text-dark">Basic</span>
+						</div>
+						<div class="progress">
+							<div class="progress-bar bg-warning" style="width: 20%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Top Customers -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-lg-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Top 10 Customers by Revenue</h5>
+				</div>
+				<div class="card-body p-0">
+					<div class="table-responsive">
+						<table class="table table-hover mb-0">
+							<thead class="table-light">
+								<tr>
+									<th>Customer</th>
+									<th class="text-center">Orders</th>
+									<th class="text-end">Total Spent</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var customer in ViewBag.TopCustomers ?? new List<object>())
+								{
+									<tr>
+										<td><strong>@customer.Customer</strong></td>
+										<td class="text-center"><span class="badge bg-info">@customer.OrderCount</span></td>
+										<td class="text-end">₹@customer.Total.ToString("0.00")</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-header bg-light border-bottom">
+					<h5 class="mb-0">Recent Orders</h5>
+				</div>
+				<div class="card-body p-0">
+					<div class="table-responsive">
+						<table class="table table-hover mb-0">
+							<thead class="table-light">
+								<tr>
+									<th>Order ID</th>
+									<th>Customer</th>
+									<th>Date</th>
+									<th class="text-end">Amount</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var order in ViewBag.RecentOrders ?? new List<object>())
+								{
+									<tr>
+										<td><strong>#@order.Id</strong></td>
+										<td>@order.CustomerName</td>
+										<td>@order.OrderDate.ToShortDateString()</td>
+										<td class="text-end">₹@order.TotalAmount.ToString("0.00")</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+	<script>
+		// Orders by Month Chart
+		var ordersCtx = document.getElementById('ordersChart');
+		if (ordersCtx) {
+			var ordersData = @Html.Raw(Json.Serialize(ViewBag.OrdersByMonth ?? new List<dynamic>()));
+
+			new Chart(ordersCtx, {
+				type: 'line',
+				data: {
+					labels: ordersData.map(o => o.month),
+					datasets: [{
+						label: 'Orders Count',
+						data: ordersData.map(o => o.orderCount),
+						borderColor: '#4f46e5',
+						backgroundColor: 'rgba(79, 70, 229, 0.1)',
+						borderWidth: 3,
+						fill: true,
+						tension: 0.4,
+						pointRadius: 5,
+						pointBackgroundColor: '#4f46e5'
+					}]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins: {
+						legend: { display: true }
+					},
+					scales: {
+						y: { beginAtZero: true }
+					}
+				}
+			});
+		}
+	</script>
+}

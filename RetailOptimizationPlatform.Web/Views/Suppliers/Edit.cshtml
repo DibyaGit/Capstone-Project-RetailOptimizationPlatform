@@ -1,0 +1,143 @@
+@model RetailOptimizationPlatform.Core.Entities.Supplier
+
+@{
+	ViewData["Title"] = "Edit Supplier";
+}
+
+<div class="container-fluid py-4">
+	<div class="row">
+		<div class="col-md-8 col-lg-6">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-warning text-dark">
+					<h5 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Supplier</h5>
+				</div>
+				<div class="card-body">
+					<form asp-action="Edit" method="post" novalidate>
+						<div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" role="alert"></div>
+
+						<input type="hidden" asp-for="Id" />
+
+						<!-- Supplier Information -->
+						<h6 class="mb-3">Supplier Information</h6>
+
+						<div class="mb-3">
+							<label asp-for="Name" class="form-label fw-medium">Supplier Name <span class="text-danger">*</span></label>
+							<input asp-for="Name" class="form-control" />
+							<div asp-validation-for="Name" class="invalid-feedback d-block"></div>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="ContactPerson" class="form-label fw-medium">Contact Person <span class="text-danger">*</span></label>
+							<input asp-for="ContactPerson" class="form-control" />
+							<div asp-validation-for="ContactPerson" class="invalid-feedback d-block"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="Email" class="form-label fw-medium">Email <span class="text-danger">*</span></label>
+								<input asp-for="Email" type="email" class="form-control" />
+								<div asp-validation-for="Email" class="invalid-feedback d-block"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="PhoneNumber" class="form-label fw-medium">Phone Number <span class="text-danger">*</span></label>
+								<input asp-for="PhoneNumber" type="tel" class="form-control" />
+								<div asp-validation-for="PhoneNumber" class="invalid-feedback d-block"></div>
+							</div>
+						</div>
+
+						<hr />
+
+						<!-- Location Information -->
+						<h6 class="mb-3">Location</h6>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="City" class="form-label fw-medium">City <span class="text-danger">*</span></label>
+								<input asp-for="City" class="form-control" />
+								<div asp-validation-for="City" class="invalid-feedback d-block"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="State" class="form-label fw-medium">State/Province</label>
+								<input asp-for="State" class="form-control" />
+								<div asp-validation-for="State" class="invalid-feedback d-block"></div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="Country" class="form-label fw-medium">Country <span class="text-danger">*</span></label>
+								<input asp-for="Country" class="form-control" />
+								<div asp-validation-for="Country" class="invalid-feedback d-block"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="PostalCode" class="form-label fw-medium">Postal Code</label>
+								<input asp-for="PostalCode" class="form-control" />
+								<div asp-validation-for="PostalCode" class="invalid-feedback d-block"></div>
+							</div>
+						</div>
+
+						<hr />
+
+						<!-- Business Terms -->
+						<h6 class="mb-3">Business Terms</h6>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="LeadTimeDays" class="form-label fw-medium">Lead Time (Days) <span class="text-danger">*</span></label>
+								<input asp-for="LeadTimeDays" type="number" class="form-control" min="1" max="100" />
+								<div asp-validation-for="LeadTimeDays" class="invalid-feedback d-block"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="PaymentTerms" class="form-label fw-medium">Payment Terms <span class="text-danger">*</span></label>
+								<input asp-for="PaymentTerms" class="form-control" />
+								<div asp-validation-for="PaymentTerms" class="invalid-feedback d-block"></div>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="CreditLimit" class="form-label fw-medium">Credit Limit (₹)</label>
+							<input asp-for="CreditLimit" type="number" step="0.01" class="form-control" min="0" />
+							<div asp-validation-for="CreditLimit" class="invalid-feedback d-block"></div>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="Rating" class="form-label fw-medium">Rating (0-5 stars)</label>
+							<input asp-for="Rating" type="number" step="0.1" class="form-control" min="0" max="5" />
+							<div asp-validation-for="Rating" class="invalid-feedback d-block"></div>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="Notes" class="form-label fw-medium">Notes</label>
+							<textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+							<div asp-validation-for="Notes" class="invalid-feedback d-block"></div>
+						</div>
+
+						<div class="form-check mb-3">
+							<input class="form-check-input" type="checkbox" asp-for="IsActive" id="isActive" />
+							<label class="form-check-label" for="isActive">
+								Supplier is Active
+							</label>
+						</div>
+
+						<hr />
+
+						<div class="d-flex gap-2">
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-check-circle"></i> Update Supplier
+							</button>
+							<a asp-action="Index" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

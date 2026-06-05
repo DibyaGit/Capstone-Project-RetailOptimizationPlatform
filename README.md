@@ -214,6 +214,12 @@ This project leveraged Generative AI to accelerate development, design the datab
 
 ---
 
+## 📄 Project Documentation & Reports
+
+- 📘 **Official Capstone Project Report**: [Dibyajyoti_Chakravarti_Capstone_Report.pdf](./Dibyajyoti_Chakravarti_Capstone_Report.pdf) — Comprehensive report covering project scope, system architecture, database design, test specifications, and training program outcomes.
+
+---
+
 ## 👤 Author Information
 
 - **Name**: Dibyajyoti Chakravarti

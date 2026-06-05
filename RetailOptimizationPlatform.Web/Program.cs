@@ -37,6 +37,10 @@ using (var scope = app.Services.CreateScope())
         // Read and apply DatabaseSetup.sql
         var contentRoot = app.Environment.ContentRootPath;
         var scriptPath = Path.Combine(contentRoot, "..", "RetailOptimizationPlatform.Data", "Scripts", "DatabaseSetup.sql");
+        if (!File.Exists(scriptPath))
+        {
+            scriptPath = Path.Combine(contentRoot, "DatabaseSetup.sql");
+        }
         if (File.Exists(scriptPath))
         {
             logger.LogInformation("Applying DatabaseSetup.sql scripts...");

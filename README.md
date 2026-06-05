@@ -189,13 +189,24 @@ dotnet test
 
 ---
 
-## 🐳 Containerization & Deployment
+## 🐳 Containerization & Cloud Deployment
 
+### Local Containerization
 To run the complete platform (Web App, Web API, and SQL Server) in Docker:
 ```bash
 docker-compose up --build
 ```
 This starts all services and connects them via a secure Docker network.
+
+### Automated Azure 24/7 Cloud Deployment
+The project includes an automated PowerShell deployment script [deploy-azure.ps1](./deploy-azure.ps1) to deploy the database and web app 24/7 to the cloud:
+1. Open PowerShell in your workspace root and execute the script:
+   ```powershell
+   .\deploy-azure.ps1
+   ```
+2. The script will check your Azure CLI login status, create a resource group (`RetailOptRG`), provision an Azure SQL Database (Basic tier), launch a Windows Web App (Free F1 tier), set connection strings securely in App Settings, and compile and publish the code.
+3. Your database credentials and live web URL are saved locally to `azure-deploy-credentials.txt`.
+4. **Cloudflare Security Proxy:** Point your custom Cloudflare CNAME record to the generated App Service hostname (`*.azurewebsites.net`) and enable the Cloudflare proxy (orange cloud) for automatic SSL/HTTPS, DDoS protection, and CDN caching.
 
 ---
 
@@ -217,6 +228,8 @@ This project leveraged Generative AI to accelerate development, design the datab
 ## 📄 Project Documentation & Reports
 
 - 📘 **Official Capstone Project Report**: [Dibyajyoti_Chakravarti_Capstone_Report.pdf](./Dibyajyoti_Chakravarti_Capstone_Report.pdf) — Comprehensive report covering project scope, system architecture, database design, test specifications, and training program outcomes.
+- 🎨 **System Architecture & Data Flows**: [ARCHITECTURE_DIAGRAMS.md](./ARCHITECTURE_DIAGRAMS.md) — Visualized system flows, database ERDs, execution lifecycles, and security validation pipelines rendered dynamically via Mermaid.js.
+- 🧠 **Analytical Thinking & Business Context**: [PROJECT_ANALYSIS.md](./PROJECT_ANALYSIS.md) — Structural analysis of business bottlenecks, architectural selections (N-tier DI, ORM vs. Stored Proc, Triggers), stateless JWT security models, and QA verification.
 
 ---
 

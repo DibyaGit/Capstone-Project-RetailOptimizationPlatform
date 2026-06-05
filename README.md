@@ -10,7 +10,8 @@
 
 <p align="center">
   <b>Wipro NGA Training Program — Capstone Project</b><br />
-  Designed and Developed by: <b>Dibyajyoti Chakravarti</b> (GitHub: <a href="https://github.com/DibyaGit">DibyaGit</a>)
+  Designed and Developed by: <b>Dibyajyoti Chakravarti</b> (GitHub: <a href="https://github.com/DibyaGit">DibyaGit</a>)<br />
+  🌐 <b>Live 24/7 Production URL:</b> <a href="https://retail-optimization-21065.azurewebsites.net" target="_blank">retail-optimization-21065.azurewebsites.net</a>
 </p>
 
 ---
@@ -205,7 +206,7 @@ The project includes an automated PowerShell deployment script [deploy-azure.ps1
    .\deploy-azure.ps1
    ```
 2. The script will check your Azure CLI login status, create a resource group (`RetailOptRG`), provision an Azure SQL Database (Basic tier), launch a Windows Web App (Free F1 tier), set connection strings securely in App Settings, and compile and publish the code.
-3. Your database credentials and live web URL are saved locally to `azure-deploy-credentials.txt`.
+3. Your database credentials and live web URL are saved locally to `azure-deploy-credentials.txt`. The live website is hosted at: [https://retail-optimization-21065.azurewebsites.net](https://retail-optimization-21065.azurewebsites.net)
 4. **Cloudflare Security Proxy:** Point your custom Cloudflare CNAME record to the generated App Service hostname (`*.azurewebsites.net`) and enable the Cloudflare proxy (orange cloud) for automatic SSL/HTTPS, DDoS protection, and CDN caching.
 
 ---

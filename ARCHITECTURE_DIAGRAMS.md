@@ -44,7 +44,7 @@ flowchart TD
     Services --> Interfaces
     Entities -.-> Interfaces
     
-    Interfaces <|-- Repos
+    Repos -->|Implements| Interfaces
     Repos --> DbContext
     DbContext --> Migrations
     DbContext -->|Parameterized T-SQL| SQL
